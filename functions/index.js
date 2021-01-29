@@ -1,15 +1,20 @@
 const functions = require("firebase-functions");
 const express = require('express')
 const bodyParser = require('body-parser')
+const cors = require('cors')({origin: true});
+//import external libraries first
 
 const { getEvents, postEvent } = require('./src/events')
 const { getPeople, postPerson } = require('./src/users')
 const { getSingleEvent, deleteEvent, updateEvent } = require('./src/events/eventId')
 const { getSinglePerson, deletePerson, updatePerson } = require('./src/users/userId')
 const { getCategories, postCategory } = require('./src/categories')
+//internal library
 
 const app = express()
 app.use(bodyParser.json())
+app.use(cors);
+//apps
 
 app.get('/events', getEvents)
 app.get('/events/:eventId', getSingleEvent)
@@ -25,6 +30,7 @@ app.patch('/people/:userId', updatePerson)
 
 app.get('/categories', getCategories)
 app.post('/categories', postCategory)
+// routes
 
 app.get('/', (req, res) => {
     res.status(200).send('Hello There...General Kenobi')
